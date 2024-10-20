@@ -1,0 +1,227 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Scanner;
+import javax.swing.*;
+
+
+public class Main {
+
+    static JFrame f=new JFrame("Battleship Player 1");
+    static JFrame d=new JFrame("Battleship Player 2");
+    static JButton[][][] firstPlayer = new JButton[2][10][10];
+    static JButton[][][] secondPlayer = new JButton[2][10][10];
+    static int[][][] StorageLocationMain = new int[2][10][10];
+
+
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+
+        f.setSize(800,400);
+        f.setLayout(null);
+        f.setVisible(true);
+        d.setSize(800,400);
+        d.setLayout(null);
+        d.setVisible(true);
+        GraphicsLoader();
+
+        int GridSize = 10;
+        int PlayerAmount = 2;
+
+
+        //StorageLocationMain = shipPlacement(StorageLocationMain,1);
+
+        //StorageLocationMain = shipPlacement(StorageLocationMain,2);
+        GraphicsUpdater(StorageLocationMain,2);
+        GraphicsUpdater(StorageLocationMain,1);
+        System.out.println("to stop the game type anything into the bottom bar");
+        int stop = keyboard.nextInt();
+
+
+    }
+
+    public static void GraphicsLoader(){
+
+        for (int i = 0; i < 2; i++) {
+            for (int y = 0; y < 10; y++) {
+                for (int x = 0; x < 10; x++) {
+                    firstPlayer[i][y][x] = new JButton("");
+                    firstPlayer[i][y][x].setOpaque(true);
+                    firstPlayer[i][y][x].setBorderPainted(false);
+                    firstPlayer[i][y][x].setBounds(30*x + i*400, 30*y, 20, 20);
+                    firstPlayer[i][y][x].setContentAreaFilled(true);
+
+
+                    int finalI = i;
+                    int finalY = y;
+                    int finalX = x;
+                    firstPlayer[i][y][x].addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            StorageLocationMain[finalI][finalY][finalX] += 1 + finalI;
+                            GraphicsUpdater(StorageLocationMain,2);
+                            GraphicsUpdater(StorageLocationMain,1);
+                        }
+                    });
+                    f.add(firstPlayer[i][y][x]);
+
+                    secondPlayer[i][y][x] = new JButton("");
+                    secondPlayer[i][y][x].setOpaque(true);
+                    secondPlayer[i][y][x].setContentAreaFilled(true);
+                    secondPlayer[i][y][x].setBorderPainted(false);
+                    secondPlayer[i][y][x].setBounds(30*x + i*400, 30*y, 20, 20);
+                    secondPlayer[i][y][x].addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            StorageLocationMain[Math.abs(1-finalI)][finalY][finalX] += 1 + finalI;
+                            GraphicsUpdater(StorageLocationMain,2);
+                            GraphicsUpdater(StorageLocationMain,1);
+                        }
+                    });
+                    d.add(secondPlayer[i][y][x]);
+                }
+            }
+        }
+    }
+
+    public static void GraphicsUpdater(int[][][] StorageLocationMain, int Player) {
+        if (Player == 1) {
+            for (int i = 0; i < 10; i++) {
+                for (int j = 0; j < 10; j++) {
+                    if (StorageLocationMain[0][i][j] == 0) {
+                        System.out.print("o ");
+                        firstPlayer[0][i][j].setBackground(Color.BLUE);
+                        
+                    } else if ((StorageLocationMain[0][i][j] == 1)) {
+                        System.out.print("- ");
+                        firstPlayer[0][i][j].setBackground(Color.GRAY);
+                    } else if ((StorageLocationMain[0][i][j] == 2)) {
+                        System.out.print("* ");
+                        firstPlayer[0][i][j].setBackground(Color.BLACK);
+                    } else if ((StorageLocationMain[0][i][j] == 3)) {
+                        System.out.print("x ");
+                        firstPlayer[0][i][j].setBackground(Color.RED);
+                    }
+                }
+                System.out.print("       ");
+                for (int j = 0; j < 10; j++) {
+                    if (StorageLocationMain[1][i][j] == 0) {
+                        System.out.print("o ");
+                        firstPlayer[1][i][j].setBackground( Color.BLUE);
+                    } else if ((StorageLocationMain[1][i][j] == 1)) {
+                        System.out.print("o ");
+                        firstPlayer[1][i][j].setBackground( Color.BLUE);
+                    } else if ((StorageLocationMain[1][i][j] == 2)) {
+                        System.out.print("* ");
+                        firstPlayer[1][i][j].setBackground( Color.BLACK);
+                    } else if ((StorageLocationMain[1][i][j] == 3)) {
+                        System.out.print("x ");
+                        firstPlayer[1][i][j].setBackground( Color.RED);
+                    }
+                }
+                System.out.println();
+            }
+
+        } else if (Player == 2) {
+            for (int i = 0; i < 10; i++) {
+                for (int j = 0; j < 10; j++) {
+                    if (StorageLocationMain[1][i][j] == 0) {
+                        System.out.print("o ");
+                        secondPlayer[0][i][j].setBackground( Color.BLUE);
+                    } else if ((StorageLocationMain[1][i][j] == 1)) {
+                        System.out.print("- ");
+                        secondPlayer[0][i][j].setBackground( Color.GRAY);
+                    } else if ((StorageLocationMain[1][i][j] == 2)) {
+                        System.out.print("* ");
+                        secondPlayer[0][i][j].setBackground( Color.BLACK);
+                    } else if ((StorageLocationMain[1][i][j] == 3)) {
+                        System.out.print("x ");
+                        secondPlayer[0][i][j].setBackground( Color.RED);
+                    }
+                }
+                System.out.print("       ");
+                for (int j = 0; j < 10; j++) {
+                    if (StorageLocationMain[0][i][j] == 0) {
+                        System.out.print("o ");
+                        secondPlayer[1][i][j].setBackground(Color.BLUE);
+                    } else if ((StorageLocationMain[0][i][j] == 1)) {
+                        System.out.print("o ");
+                        secondPlayer[1][i][j].setBackground(Color.BLUE);
+                    } else if ((StorageLocationMain[0][i][j] == 2)) {
+                        System.out.print("* ");
+                        secondPlayer[1][i][j].setBackground(Color.BLACK);
+                    } else if ((StorageLocationMain[0][i][j] == 3)) {
+                        System.out.print("x ");
+                        secondPlayer[1][i][j].setBackground(Color.RED);
+                    }
+                }
+                System.out.println();
+            }
+        }
+    }
+
+    public static void Backend(int[][][] PullLocation, int Player, int i) {
+        for (int j = 0; j < 10; j++) {
+            if (PullLocation[Player - 1][i][j] == 0) {
+                System.out.print("o ");
+
+            } else if ((PullLocation[Player - 1][i][j] == 1)) {
+                System.out.print("- ");
+            } else if ((PullLocation[Player - 1][i][j] == 2)) {
+                System.out.print("* ");
+            } else if ((PullLocation[Player - 1][i][j] == 3)) {
+                System.out.print("x ");
+            }
+
+        }
+    }
+    public static int[][][] shipPlacement (int[][][] StorageLocationMain, int Player){
+        Scanner keyboard = new Scanner(System.in);
+        int x,y;
+        System.out.println("Player " + Player + ", Where do you want your first ship? Please give its X value now");
+        x = keyboard.nextInt()-1;
+        System.out.println("Player " + Player + ", Where do you want your first ship? Please give its Y value now");
+        y = keyboard.nextInt()-1;
+        StorageLocationMain[Player-1][y][x] = 1;
+        GraphicsUpdater(StorageLocationMain,Player);
+        System.out.println();
+        for (int i = 2; i > 0; i--) {
+            System.out.println("Player " + Player + ", You have " + i + " ships left to place");
+            System.out.println("Where do you want your next ship? Please give its X value now");
+            x = keyboard.nextInt()-1;
+            System.out.println("Where do you want your next ship? Please give its Y value now");
+            y = keyboard.nextInt()-1;
+            StorageLocationMain[Player-1][y][x] = 1;
+            GraphicsUpdater(StorageLocationMain,Player);
+            System.out.println();
+        }
+       return StorageLocationMain;
+    }
+    public static int[][][] hitReader (int[][][] StorageLocationMain, int Player){
+        Scanner keyboard = new Scanner(System.in);
+        int y,x;
+        if (Player == 1){
+            for (int i = 3; i > 0; i--) {
+                System.out.println("Player " + Player + ",You have " + i + " shots left");
+                System.out.println("Where do you want to shoot? Please give the Y value now");
+                y = keyboard.nextInt()-1;
+                System.out.println("Where do you want to shoot? Please give the X value now");
+                x = keyboard.nextInt()-1;
+                StorageLocationMain[1][y][x] += 2;
+                GraphicsUpdater(StorageLocationMain,Player);
+            }
+        } else if (Player == 2) {
+            for (int i = 3; i > 0; i--) {
+                System.out.println("Player " + Player + ",You have " + i + " shots left");
+                System.out.println("Where do you want to shoot? Please give the Y value now");
+                y = keyboard.nextInt()-1;
+                System.out.println("Where do you want to shoot? Please give the X value now");
+                x = keyboard.nextInt()-1;
+                StorageLocationMain[0][y][x] += 2;
+                GraphicsUpdater(StorageLocationMain,Player);
+                System.out.println();
+            }
+        }
+        return StorageLocationMain;
+        }
+    }
