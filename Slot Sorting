@@ -1,0 +1,54 @@
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        int[] coolList = {100,35,65,34,19,20,48,32,29,5,39,43,4,2,2,4};
+
+        System.out.println(Arrays.toString(SlotSort(coolList)));
+        System.out.println(medianAverage(SlotSort(coolList)));
+        System.out.println(meanAverage(SlotSort(coolList)));
+    }
+
+    public static int[] SlotSort(int[] sortList){
+
+        int b,c;
+        int[] sortedList = new int[sortList.length];
+
+        for (int i = 0; i < sortList.length; i++) {
+            b=0;
+            c=-1;
+            for (int a = 0; a < sortList.length; a++) {
+                if (sortList[i] > sortList[a]) {
+                    b++;
+                } else if (sortList[i] == sortList[a]){
+                    c++;
+                }
+            }
+            while (c>=0){
+                sortedList[b+c] = sortList[i];
+                c--;
+            }
+        }
+        return sortedList;
+    }
+    public static float medianAverage(int[] sortedList) {
+        int n = sortedList.length;
+        float b;
+        if (n%2 == 1){
+            n = n/2;
+            return (sortedList[n]);
+        } else {
+            n = n/2;
+            b = (sortedList[n] + sortedList[n+1])/2;
+            return (b);
+        }
+    }
+    public static float meanAverage(int[] sortedList){
+        float b = 0;
+        for (int i = 0; i < sortedList.length; i++) {
+            b += sortedList[i];
+        }
+
+        return (b/sortedList.length);
+    }
+}
